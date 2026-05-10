@@ -129,4 +129,92 @@ select case when bdate > GETDATE() then NULL
 from silver.erp_cust_az12
 where bdate > GETDATE();
 
+/*
+=======================================
+ERP Table: bronze.erp_loc_a101
+=======================================
+*/
 
+
+/*
+========================================================
+Main Transformation: Query ---> silver.erp_loc_a101
+========================================================
+*/
+
+select replace(cid, '-', '') as cid,
+	   case when trim(cntry) = 'DE' then 'Germany'
+			when trim(cntry) in ('US', 'USA') then 'United States'
+			when trim(cntry) = '' or cntry is null then 'n/a'
+			else trim(cntry)
+	   end cntry  -- Normalize and handle missing or blank country codes
+from bronze.erp_loc_a101;
+
+/*
+==========================================
+			EXPLORATION
+==========================================
+*/
+
+-- check: select cst_key from silver.crm_cust_info;
+
+select top 3 * from bronze.erp_loc_a101;
+select top 3 cst_key from silver.crm_cust_info;
+
+-- check: To join silver.crm_cust_info key.
+-- Expectation: format AW-00011000 --> AW00011000
+
+		select replace(cid, '-', '') as cid
+		from bronze.erp_loc_a101;
+		-- result: formatted AW-00011000 --> AW00011000
+
+		-- check match values.
+		select replace(cid, '-', '') as cid
+		from bronze.erp_loc_a101
+		where replace(cid, '-', '') not in (select cst_key from silver.crm_cust_info);
+
+
+-- check: COLUMN : cntry
+
+		select distinct cntry
+		from bronze.erp_loc_a101;
+
+
+	   select distinct
+	   case when trim(cntry) = 'DE' then 'Germany'
+			when trim(cntry) in ('US', 'USA') then 'United States'
+			when trim(cntry) = '' or cntry is null then 'n/a'
+			else trim(cntry)
+	   end cntry
+	   from bronze.erp_loc_a101;
+
+/*
+=============================
+		INSERTION
+=============================
+*/
+
+insert into silver.erp_loc_a101(
+	cid,
+	cntry
+)
+select replace(cid, '-', '') as cid,
+	   case when trim(cntry) = 'DE' then 'Germany'
+			when trim(cntry) in ('US', 'USA') then 'United States'
+			when trim(cntry) = '' or cntry is null then 'n/a'
+			else trim(cntry)
+	   end cntry
+from bronze.erp_loc_a101;
+
+
+/*
+===============================
+	  Data Quality check
+===============================
+*/
+
+select * from silver.erp_loc_a101;
+
+select replace(cid, '-', '') as cid
+from bronze.erp_loc_a101
+where replace(cid, '-', '') not in (select cst_key from silver.crm_cust_info);
