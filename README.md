@@ -103,29 +103,6 @@ The design prioritizes simplicity, consistency, and performance.
 | SQL | Querying and transformation |
 | ETL Process | Data integration workflow |
 
----
-
-# Project Structure
-
-```text
-Data-Warehouse-Project/
-│
-├── datasets/
-│
-├── sql/
-│   ├── extraction/
-│   ├── transformation/
-│   ├── loading/
-│   └── analytics/
-│
-├── documentation/
-│
-├── screenshots/
-│
-└── README.md
-```
-
----
 
 # Expected Outcomes
 
@@ -169,3 +146,12 @@ Software.
 ```
 
 ---
+
+## Tech Stack
+
+![SQL Server](https://img.shields.io/badge/SQL%20Server-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white)
+![Data Warehouse](https://img.shields.io/badge/Data%20Warehouse-1E90FF?style=for-the-badge)
+![ETL](https://img.shields.io/badge/ETL-2E8B57?style=for-the-badge)
+![Data Engineering](https://img.shields.io/badge/Data%20Engineering-FF8C00?style=for-the-badge)
+![Draw.io](https://img.shields.io/badge/Draw.io-F08705?style=for-the-badge&logo=diagramsdotnet&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
