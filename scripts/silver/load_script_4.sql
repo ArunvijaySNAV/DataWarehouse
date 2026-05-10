@@ -215,6 +215,69 @@ from bronze.erp_loc_a101;
 
 select * from silver.erp_loc_a101;
 
+
 select replace(cid, '-', '') as cid
 from bronze.erp_loc_a101
 where replace(cid, '-', '') not in (select cst_key from silver.crm_cust_info);
+
+
+/*
+=======================================
+ERP Table: bronze.erp_px_cat_g1v2
+=======================================
+*/
+
+
+/*
+========================================================
+Main Transformation: Query ---> silver.erp_px_cat_g1v2
+========================================================
+*/
+
+select id,
+	   cat,
+	   subcat,
+	   maintenance
+from bronze.erp_px_cat_g1v2;
+
+/*
+==========================
+	   Exploration
+==========================
+*/
+
+-- check: COLUMN: cat  AND check spacing
+-- Expectation: Data must be normalized and standard 
+
+		select cat
+		from bronze.erp_px_cat_g1v2
+		WHERE cat != trim(cat);
+		-- Result: Data is standardized and normalized which doesn't contain spacing
+
+		-- whole table:
+
+		select *
+		from bronze.erp_px_cat_g1v2
+		WHERE cat != trim(cat) or 
+			  subcat != trim(subcat) or
+			  maintenance != trim(maintenance);
+
+/*
+==============================
+		INSERTION
+==============================
+*/
+
+insert into silver.erp_px_cat_g1v2(
+	id,
+	cat,
+	subcat,
+	maintenance
+)
+select id,
+	   cat,
+	   subcat,
+	   maintenance
+from bronze.erp_px_cat_g1v2;
+
+select * from silver.erp_px_cat_g1v2;
